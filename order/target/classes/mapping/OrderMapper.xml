@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zht.repository.OrderRepository">
+
+    <select id="findAllByUid" resultType="com.zht.entity.Order">
+        select * from t_order where uid=#{param3} limit #{param1},#{param2}
+    </select>
+
+    <select id="findAllByState" resultType="com.zht.entity.Order">
+        select * from t_order where state=#{param3} limit #{param1},#{param2}
+    </select>
+
+    <select id="countByUid" resultType="int">
+        select count(id) from t_order where uid=#{param1}
+    </select>
+
+    <select id="countByState" resultType="int">
+        select count(id) from t_order where state=#{param1}
+    </select>
+
+    <insert id="save" parameterType="com.zht.entity.Order">
+        insert into t_order(uid,mid,aid,date,state)
+        values (#{uid},#{mid},#{aid},#{date},#{state})
+    </insert>
+
+    <update id="updateStateTo1" parameterType="long">
+        update t_order set state = 1 where id = #{param1}
+    </update>
+
+    <delete id="deleteById" parameterType="long">
+        delete from t_order where id = #{param1}
+    </delete>
+</mapper>

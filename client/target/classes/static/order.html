@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all">
+</head>
+<body>
+<div class="layui-container" style="width: 960px;height: 600px;margin-top: 0px;padding-top: 60px;">
+
+    <div style="margin-left: 460px; width: 300px;">
+        <a href="/account/index" style="color: blueviolet;">首页</a>&nbsp;&nbsp;|&nbsp;&nbsp;欢迎回来！<a href="/order/index" th:text="${session.user.nickname}"></a><a href="/account/logout">&nbsp;&nbsp;&nbsp;<button class="layui-btn layui-btn-warm layui-btn-radius">退出</button></a>
+    </div>
+
+    <table class="layui-hide" id="test" lay-filter="test"></table>
+    <script th:src="@{/layui/layui.js}" charset="utf-8"></script>
+
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="cancel">取消</a>
+    </script>
+
+    <script>
+        layui.use('table', function(){
+            var table = layui.table;
+
+            table.render({
+                elem: '#test'
+                ,url:'/order/findAllByUid'
+                ,title: '菜单列表'
+                ,cols: [
+                    [
+                        {field:'id', width:80, title: '编号', sort: true},
+                        {field: 'name', width: 200, title: '菜品', templet: function (data) {
+                                return data.menu.name
+                            }
+                        }
+                        , {
+                        field: 'price', width: 100, title: '单价', templet: function (data) {
+                                return data.menu.price
+                            }
+                        }
+                        ,{field:'flavor', width:100, title: '口味',templet:function(data){
+                                return data.menu.flavor
+                            }
+                        }
+                        ,{field:'date',width:200,  title: '下单时间', templet:function(data){
+                                return formatDate(data.date, "-")
+                            }
+                         },
+                        {field:'state', width:200, title: '订单状态',templet:function(data){
+                                var result = "";
+                                switch (data.state) {
+                                    case 0:
+                                        result = "未派送";
+                                        break;
+                                    case 1:
+                                        result = "已派送";
+                                        break;
+                                }
+                                return result
+                            }
+                        },
+
+                        {fixed: 'right', title:'操作', toolbar: '#barDemo', width:90}
+
+                    ]
+                ]
+                ,page: true
+            });
+
+            //监听行工具事件
+            table.on('tool(test)', function(obj){
+                var data = obj.data;
+                if(obj.event === 'cancel'){
+<!--                    window.location.href="/order/save/"+data.id;-->
+                }
+            });
+        });
+
+        function formatDate(dateStr, type) {
+            if (dateStr == undefined || dateStr == "") {
+                return "";
+            }
+            var date = new Date(dateStr);
+            var year = "" + date.getFullYear() + "";
+            var month = "" + (date.getMonth() + 1) < 10 ? ("0" + (date.getMonth() + 1)) : (date.getMonth() + 1) + "";
+            var day = "" + (date.getDate() < 10 ? ("0" + date.getDate()) : date.getDate()) + "";
+            var hour = "" + (date.getHours() < 10 ? ("0" + date.getHours()) : date.getHours()) + "";
+            var minute = "" + (date.getMinutes() < 10 ? ("0" + date.getMinutes()) : date.getMinutes()) + "";
+            var second = "" + (date.getSeconds() < 10 ? ("0" + date.getSeconds()) : date.getSeconds()) + "";
+            var returnDate;
+            if (type == "-") {
+                //2019-05-01 00:00:00
+                returnDate = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+            }
+            else if (type == "/") {
+                //2019/05/01 00:00:00
+                returnDate = year + "/" + month + "/" + day + " " + hour + ":" + minute + ":" + second;
+            }
+            return returnDate;
+        }
+    </script>
+
+</div>
+<script>
+    //二级菜单联动
+    layui.use('element', function(){
+        var element = layui.element;
+
+    });
+</script>
+</body>
+</html>
