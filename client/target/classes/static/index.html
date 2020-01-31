@@ -47,7 +47,11 @@
             table.on('tool(test)', function(obj){
                 var data = obj.data;
                 if(obj.event === 'order'){
-                    window.location.href="/order/save/"+data.id;
+                    layer.confirm("是否确定订购：" + data.name, function(id) {
+                        window.location.href="/order/save/"+data.id
+                        layer.close(id)
+                    })
+
                 }
             });
         });

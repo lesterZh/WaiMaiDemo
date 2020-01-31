@@ -11,3 +11,9 @@ spring:
       server:
         native:
           search-locations: classpath:/shared
+
+  datasource:
+    name: orderingsystem
+    url: jdbc:mysql://localhost:3306/orderingsystem?useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: root

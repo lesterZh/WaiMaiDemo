@@ -73,4 +73,19 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <!--        <finalName>eurekaserver</finalName>  &lt;!&ndash; 最终package打包的jar名称，注意这里没有版本号了。 &ndash;&gt;-->
+        <plugins>
+            <plugin>
+                <!--  这个插件用来生成 fat jar-->
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.zht.EurekaServiceApplication</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
